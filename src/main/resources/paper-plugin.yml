@@ -1,0 +1,9 @@
+name: Tweaker
+version: '${version}'
+main: dev.necr.tweaker.Tweaker
+api-version: '1.20'
+authors: [ necr ]
+description: Survival Tweaks
+bootstrapper: dev.necr.tweaker.loader.TweakerBootstrap
+loader: dev.necr.tweaker.loader.TweakerLoader
+
