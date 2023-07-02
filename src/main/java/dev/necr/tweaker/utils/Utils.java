@@ -16,7 +16,7 @@ public class Utils {
      * Gets the plugin description
      */
     public String getPluginDescription() {
-        return StringUtils.colorizeText("&eThis server is running &bTweaker &b" + plugin.getPluginMeta().getVersion() + " &eby &b" + plugin.getPluginMeta().getAuthors());
+        return StringUtils.colorize("&eThis server is running &bTweaker &b" + plugin.getPluginMeta().getVersion() + " &eby &b" + plugin.getPluginMeta().getAuthors());
     }
 
     /**
@@ -60,25 +60,25 @@ public class Utils {
         if (!silent) {
             if (showPermission) {
                 if (command != null) {
-                    target.sendMessage(StringUtils.colorizeText("&cYou don't have the required permission &l" + permission + " to do &l" + command + "&c!"));
+                    target.sendMessage(StringUtils.colorize("&cYou don't have the required permission &l" + permission + " to do &l" + command + "&c!"));
                 } else {
-                    target.sendMessage(StringUtils.colorizeText("&cYou don't have the required permission &l" + permission + " to do that!"));
+                    target.sendMessage(StringUtils.colorize("&cYou don't have the required permission &l" + permission + " to do that!"));
                 }
             } else {
                 if (command != null) {
-                    target.sendMessage(StringUtils.colorizeText("&cYou don't have the required permission to do &l" + command + "&c!"));
+                    target.sendMessage(StringUtils.colorize("&cYou don't have the required permission to do &l" + command + "&c!"));
                 } else {
-                    target.sendMessage(StringUtils.colorizeText("&cYou don't have the required permission to do that!"));
+                    target.sendMessage(StringUtils.colorize("&cYou don't have the required permission to do that!"));
                 }
             }
         } else {
-            target.sendMessage(StringUtils.colorizeText("Unknown command! Type \"/help\" for help!"));
+            target.sendMessage(StringUtils.colorize("Unknown command! Type \"/help\" for help!"));
         }
 
-        plugin.getLogger().info(StringUtils.colorizeText("Player &l" + target.getName() + " &rattempted to run something but lacks &l" + permission + " &rpermission."));
+        plugin.getLogger().info(StringUtils.colorize("Player &l" + target.getName() + " &rattempted to run something but lacks &l" + permission + " &rpermission."));
         for (final Player currentPlayer : plugin.getServer().getOnlinePlayers()) {
             if (currentPlayer.hasPermission("bungeecore.operator")) {
-                currentPlayer.sendMessage(StringUtils.colorizeText("&bPlayer &e&l" + target.getName() + " &battempted to run something but lacks &l&e" + permission + " &bpermission."));
+                currentPlayer.sendMessage(StringUtils.colorize("&bPlayer &e&l" + target.getName() + " &battempted to run something but lacks &l&e" + permission + " &bpermission."));
             }
         }
 

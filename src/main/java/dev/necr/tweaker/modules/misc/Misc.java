@@ -1,5 +1,12 @@
 package dev.necr.tweaker.modules.misc;
 
-public class Misc {
+import dev.necr.tweaker.modules.Module;
+
+public class Misc extends Module {
+
+    @Override
+    public void init() {
+        commandManager.initCommands(this.getClass());
+    }
 
 }

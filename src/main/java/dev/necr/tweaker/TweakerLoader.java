@@ -1,4 +1,4 @@
-package dev.necr.tweaker.loader;
+package dev.necr.tweaker;
 
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
 import io.papermc.paper.plugin.loader.PluginLoader;
@@ -16,7 +16,6 @@ public class TweakerLoader implements PluginLoader {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
 
         resolver.addRepository(new RemoteRepository.Builder("maven-central", "default", "https://repo.maven.apache.org/maven2/").build());
-        resolver.addRepository(new RemoteRepository.Builder("sonatype", "default", "https://oss.sonatype.org/content/repositories/snapshots/").build());
 
         resolver.addDependency(new Dependency(new DefaultArtifact("cloud.commandframework:cloud-paper:1.8.3"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("cloud.commandframework:cloud-core:1.8.3"), null));

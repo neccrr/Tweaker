@@ -1,23 +1,16 @@
 package dev.necr.tweaker.modules.respawngui;
 
-import dev.necr.tweaker.Tweaker;
+import dev.necr.tweaker.modules.Module;
 import dev.necr.tweaker.modules.respawngui.listeners.PlayerRespawnListener;
 
-public class RespawnGUI {
+public class RespawnGUI extends Module {
 
-    private final Tweaker plugin;
-
-    public RespawnGUI(Tweaker plugin) {
-        this.plugin = plugin;
-
-        this.initialize();
-    }
-
-    private void initialize() {
-        this.plugin.getLogger().info("Initializing RespawnGUI module...");
+    @Override
+    public void init() {
+        plugin.getLogger().info("Initializing RespawnGUI module...");
 
         plugin.getServer().getPluginManager().registerEvents(new PlayerRespawnListener(plugin), plugin);
 
-        this.plugin.getLogger().info("RespawnGUI module initialized!");
+        plugin.getLogger().info("RespawnGUI module initialized!");
     }
 }

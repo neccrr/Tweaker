@@ -97,29 +97,44 @@ public class CommandManager {
                 })
         );
 
-        this.initCommands(MainCommand.class);
-        this.initCommands(Misc.class);
+        this.initMainCommand();
     }
 
-    private void initCommands(Class<?> clazz) {
-        plugin.getLogger().info("Loading and registering commands...");
+    public void initCommands(Class<?> clazz) {
+        plugin.getLogger().info("Loading and registering " + clazz.getName() + "commands");
         try {
             ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(clazz.getPackage().getName() + ".commands")) {
                 try {
                     Class<?> commandClass = Class.forName(classInfo.getName());
                     this.parseAnnotationCommands(commandClass.getDeclaredConstructor().newInstance());
+                    plugin.getLogger().info("Registered " + commandClass.getName() + " commands!");
                 } catch (Exception e) {
                     plugin.getLogger().severe("Failed loading command class: " + classInfo.getName());
                     e.printStackTrace();
                 }
             }
 
-            plugin.getLogger().info("Registered " + commandManager.commands().size() + " commands!");
+            plugin.getLogger().info("Registered " + clazz.getName() + " commands!");
         } catch (IOException e) {
-            plugin.getLogger().severe("Failed loading command classes!");
+            plugin.getLogger().severe("Failed loading " + clazz.getName() + "command classes!");
             e.printStackTrace();
         }
+    }
+
+    private void initMainCommand() {
+        Class<?> clazz = MainCommand.class;
+
+        plugin.getLogger().info("Loading and registering " + clazz.getName() + " command...");
+
+        try {
+            this.parseAnnotationCommands(clazz.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            plugin.getLogger().severe("Failed loading command class: " + clazz.getName());
+            e.printStackTrace();
+        }
+
+        plugin.getLogger().info("Registered " + clazz.getName() + " commands!");
     }
 
     private void parseAnnotationCommands(Object... clazz) {

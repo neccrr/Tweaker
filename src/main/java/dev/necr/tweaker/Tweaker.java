@@ -1,7 +1,8 @@
 package dev.necr.tweaker;
 
 import dev.necr.tweaker.commands.CommandManager;
-import dev.necr.tweaker.modules.respawngui.RespawnGUI;
+import dev.necr.tweaker.modules.Module;
+import dev.necr.tweaker.modules.ModuleManager;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,6 +14,8 @@ public final class Tweaker extends JavaPlugin {
 
     @Getter
     private CommandManager commandManager;
+    @Getter
+    private ModuleManager moduleManager;
 
     @Override
     public void onEnable() {
@@ -23,7 +26,8 @@ public final class Tweaker extends JavaPlugin {
 
         this.commandManager = new CommandManager(this);
 
-        RespawnGUI respawnGUI = new RespawnGUI(this);
+        this.moduleManager = new ModuleManager(this);
+        this.moduleManager.initModules();
 
         this.getLogger().info(this.getPluginMeta().getName() + this.getPluginMeta().getDescription() + " loaded in " + (System.currentTimeMillis() - millis) + "ms!");
     }

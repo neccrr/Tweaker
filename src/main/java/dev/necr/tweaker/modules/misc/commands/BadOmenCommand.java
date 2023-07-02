@@ -3,13 +3,14 @@ package dev.necr.tweaker.modules.misc.commands;
 import cloud.commandframework.annotations.CommandDescription;
 import cloud.commandframework.annotations.CommandMethod;
 import dev.necr.tweaker.api.CommandClass;
+import dev.necr.tweaker.utils.StringUtils;
 import dev.necr.tweaker.utils.Utils;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-@SuppressWarnings({"unused", "UnstableApiUsage"})
+@SuppressWarnings({"unused"})
 public class BadOmenCommand extends CommandClass {
 
     @CommandMethod("badomen give")
@@ -20,6 +21,7 @@ public class BadOmenCommand extends CommandClass {
         }
 
         sender.addPotionEffect(new PotionEffect(PotionEffectType.BAD_OMEN, Integer.MAX_VALUE, 0, false, false));
+        sender.sendMessage(StringUtils.colorize("&aYou have been given Bad Omen Effect"));
     }
 
     @CommandMethod("badomen remove")
@@ -30,6 +32,7 @@ public class BadOmenCommand extends CommandClass {
         }
 
         sender.removePotionEffect(PotionEffectType.BAD_OMEN);
+        sender.sendMessage(StringUtils.colorize("&cYou have been removed from Bad Omen Effect"));
     }
 
 }

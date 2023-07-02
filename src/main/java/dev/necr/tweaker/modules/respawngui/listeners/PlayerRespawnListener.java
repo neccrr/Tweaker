@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -25,8 +25,7 @@ import java.util.Collections;
 public class PlayerRespawnListener implements Listener {
 
     private final Tweaker plugin;
-
-    private final String title = "You Died!";
+    private final Inventory inventory = Bukkit.createInventory(null, 27, "You Died!");
 
     private final ItemStack respawnItem = new ItemStack(Material.SUGAR_CANE, 1);
     private final ItemStack backItem = new ItemStack(Material.ARROW, 1);
@@ -35,30 +34,25 @@ public class PlayerRespawnListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        // this.plugin.getLogger().info("Player " + event.getPlayer().getName() + " has respawned!");
-
-        // Create the inventory
-        Inventory inventory = Bukkit.createInventory(null, 27, title);
-        // this.plugin.getLogger().info("Created inventory for " + player.getName() + "!");
 
         // Add items to the inventory
         ItemMeta respawnItemMeta = respawnItem.getItemMeta();
-        respawnItemMeta.setDisplayName(StringUtils.colorizeText("&aRespawn"));
-        respawnItemMeta.setLore(Collections.singletonList(StringUtils.colorizeText("&7Klik untuk respawn!")));
+        respawnItemMeta.setDisplayName(StringUtils.colorize("&aRespawn"));
+        respawnItemMeta.setLore(Collections.singletonList(StringUtils.colorize("&7Klik untuk respawn!")));
         respawnItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
 
         respawnItem.setItemMeta(respawnItemMeta);
 
         ItemMeta backItemMeta = backItem.getItemMeta();
-        backItemMeta.setDisplayName(StringUtils.colorizeText("&aRespawn dengan \"/back!\""));
-        backItemMeta.setLore(Collections.singletonList(StringUtils.colorizeText("&7Klik untuk respawn dengan \"/back\"!")));
+        backItemMeta.setDisplayName(StringUtils.colorize("&aRespawn dengan \"/back!\""));
+        backItemMeta.setLore(Collections.singletonList(StringUtils.colorize("&7Klik untuk respawn dengan \"/back\"!")));
         backItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
 
         backItem.setItemMeta(backItemMeta);
 
         ItemMeta warpBaseItemMeta = warpBaseItem.getItemMeta();
-        warpBaseItemMeta.setDisplayName(StringUtils.colorizeText("&aRespawn dengan \"/warp base!\""));
-        warpBaseItemMeta.setLore(Collections.singletonList(StringUtils.colorizeText("&7Klik untuk respawn dengan \"/warp base\"!")));
+        warpBaseItemMeta.setDisplayName(StringUtils.colorize("&aRespawn dengan \"/warp base!\""));
+        warpBaseItemMeta.setLore(Collections.singletonList(StringUtils.colorize("&7Klik untuk respawn dengan \"/warp base\"!")));
         warpBaseItemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
 
         warpBaseItem.setItemMeta(warpBaseItemMeta);
@@ -67,7 +61,6 @@ public class PlayerRespawnListener implements Listener {
         inventory.setItem(15, backItem);
         inventory.setItem(11, warpBaseItem);
 
-        // this.plugin.getLogger().info("Added item to inventory for " + player.getName() + "!");
 
 
         // Schedule a delayed task using Bukkit Scheduler
@@ -76,7 +69,6 @@ public class PlayerRespawnListener implements Listener {
 
             // Open the inventory for the player
             player.openInventory(inventory);
-            // this.plugin.getLogger().info("Opened inventory for " + player.getName() + "!");
 
         }, 1L / 2L); // 20 ticks = 1-second delay
     }
@@ -87,73 +79,64 @@ public class PlayerRespawnListener implements Listener {
         ItemStack clickedItem = event.getCurrentItem();
 
         // Check if the inventory is the same inventory created before
-        if (event.getClickedInventory() != null && event.getView().getTitle().equals(title)) {
-            // this.plugin.getLogger().info("Player " + player.getName() + " clicked in the inventory!");
+        if (event.getClickedInventory() != null && event.getClickedInventory().equals(inventory)) {
 
             // Check if the clicked item is not null
             if (clickedItem != null) {
-                // this.plugin.getLogger().info("Player " + player.getName() + " clicked on an item!");
                 // Make the item unmovable
                 event.setCancelled(true);
 
                 // Check if the clicked item is the respawn item
                 if (clickedItem.getType() == respawnItem.getType()) {
-                    // this.plugin.getLogger().info("Player " + player.getName() + " clicked on the respawn item!");
 
                     // Close the inventory
                     player.closeInventory();
-                    // this.plugin.getLogger().info("Closed inventory for " + player.getName() + "!");
 
                     // Send "RESPAWNED" title to the player
-                    player.sendTitle(StringUtils.colorizeText("&aRESPAWNED!"), StringUtils.colorizeText("&eKamu telah respawn!"), 10, 70, 20);
+                    player.sendTitle(StringUtils.colorize("&aRESPAWNED!"), StringUtils.colorize("&eKamu telah respawn!"), 10, 70, 20);
 
                     return;
                 }
 
                 // Check if the clicked item is the back item
                 if (clickedItem.getType() == backItem.getType()) {
-                    // this.plugin.getLogger().info("Player " + player.getName() + " clicked on the back item!");
 
                     // Respawn the player with /back
                     player.performCommand("back");
-                    // this.plugin.getLogger().info("Player " + player.getName() + " respawned with /back!");
 
                     // Close the inventory
                     player.closeInventory();
-                    // this.plugin.getLogger().info("Closed inventory for " + player.getName() + "!");
 
                     // Send "RESPAWNED" title to the player
-                    player.sendTitle(StringUtils.colorizeText("&aRESPAWNED!"), StringUtils.colorizeText("&eKamu telah respawn menggunakan \"/back\"!"), 10, 70, 20);
+                    player.sendTitle(StringUtils.colorize("&aRESPAWNED!"), StringUtils.colorize("&eKamu telah respawn menggunakan \"/back\"!"), 10, 70, 20);
 
                     return;
                 }
 
                 // Check if the clicked item is the warp base item
                 if (clickedItem.getType() == warpBaseItem.getType()) {
-                    // this.plugin.getLogger().info("Player " + player.getName() + " clicked on the warp base item!");
 
                     // Respawn the player with /warp base
                     player.performCommand("warp base");
-                    // this.plugin.getLogger().info("Player " + player.getName() + " respawned with /warp base!");
 
                     // Close the inventory
                     player.closeInventory();
-                    // this.plugin.getLogger().info("Closed inventory for " + player.getName() + "!");
 
                     // Send "RESPAWNED" title to the player
-                    player.sendTitle(StringUtils.colorizeText("&aRESPAWNED!"), StringUtils.colorizeText("&eKamu telah respawn menggunakan \"/warp base\"!"), 10, 70, 20);
-
-                    return;
-                }
-
-                // check if player closed the created inventory
-                if (event.getAction() == InventoryAction.NOTHING) {
-                    // this.plugin.getLogger().info("Player " + player.getName() + " closed the inventory!");
-
-                    // Send "RESPAWNED" title to the player
-                    player.sendTitle(StringUtils.colorizeText("&aRESPAWNED!"), StringUtils.colorizeText("&eKamu telah respawn!"), 10, 70, 20);
+                    player.sendTitle(StringUtils.colorize("&aRESPAWNED!"), StringUtils.colorize("&eKamu telah respawn menggunakan \"/warp base\"!"), 10, 70, 20);
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+
+        // Check if the inventory is the same inventory created before
+        if (event.getInventory().equals(inventory)) {
+            // Send "RESPAWNED" title to the player
+            player.sendTitle(StringUtils.colorize("&aRESPAWNED!"), StringUtils.colorize("&eKamu telah respawn!"), 10, 70, 20);
         }
     }
 

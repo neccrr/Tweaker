@@ -1,4 +1,4 @@
-package dev.necr.tweaker.loader;
+package dev.necr.tweaker;
 
 import dev.necr.tweaker.Tweaker;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
