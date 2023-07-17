@@ -9,6 +9,7 @@ public class RespawnGUI extends Module {
     public void init() {
         plugin.getLogger().info("Initializing RespawnGUI module...");
 
+        plugin.getLogger().info("Initializing PlayerRespawnListener...");
         plugin.getServer().getPluginManager().registerEvents(new PlayerRespawnListener(plugin), plugin);
 
         plugin.getLogger().info("RespawnGUI module initialized!");

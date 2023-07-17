@@ -1,29 +1,24 @@
 package dev.necr.tweaker.commands;
 
+import cloud.commandframework.Command;
+import cloud.commandframework.CommandTree;
+import cloud.commandframework.annotations.AnnotationParser;
 import cloud.commandframework.arguments.parser.ParserParameters;
 import cloud.commandframework.arguments.parser.StandardParameters;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
-import cloud.commandframework.meta.CommandMeta;
-import com.google.common.reflect.ClassPath;
-import dev.necr.tweaker.Tweaker;
-
-import cloud.commandframework.Command;
-import cloud.commandframework.CommandTree;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.annotations.AnnotationParser;
+import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.paper.PaperCommandManager;
-
+import dev.necr.tweaker.Tweaker;
 import dev.necr.tweaker.commands.main.MainCommand;
-import dev.necr.tweaker.modules.misc.Misc;
+import dev.necr.tweaker.utils.StringUtils;
 import dev.necr.tweaker.utils.Utils;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-
 import lombok.Getter;
-
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -60,10 +55,9 @@ public class CommandManager {
         this.builder = this.commandManager.commandBuilder("tweaker", "tweak");
 
         // registers the custom help command
-        BukkitAudiences bukkitAudiences = BukkitAudiences.create(plugin);
         this.minecraftHelp = new MinecraftHelp<>(
                 "/tweaker help",
-                bukkitAudiences::sender,
+                plugin.getAudience()::sender,
                 this.commandManager
         );
 
@@ -90,51 +84,33 @@ public class CommandManager {
                     CommandSender sender = commandContext.getSender();
                     String query = commandContext.getOrDefault("query", null);
                     if (query == null) {
-                        sender.sendMessage(Utils.getPluginDescription());
+                        plugin.getAudience().sender(sender).sendMessage(Component.text(Utils.getPluginDescription()));
+                        plugin.getAudience().sender(sender).sendMessage(Component.text(StringUtils.colorize("&7Use &e/tweaker help&7 to see the list of commands")));
                         return;
                     }
                     this.getMinecraftHelp().queryCommands(query, sender);
                 })
         );
 
-        this.initMainCommand();
+        this.initCommand(MainCommand.class);
     }
 
-    public void initCommands(Class<?> clazz) {
-        plugin.getLogger().info("Loading and registering " + clazz.getName() + "commands");
-        try {
-            ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
-            for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(clazz.getPackage().getName() + ".commands")) {
-                try {
-                    Class<?> commandClass = Class.forName(classInfo.getName());
-                    this.parseAnnotationCommands(commandClass.getDeclaredConstructor().newInstance());
-                    plugin.getLogger().info("Registered " + commandClass.getName() + " commands!");
-                } catch (Exception e) {
-                    plugin.getLogger().severe("Failed loading command class: " + classInfo.getName());
-                    e.printStackTrace();
-                }
-            }
-
-            plugin.getLogger().info("Registered " + clazz.getName() + " commands!");
-        } catch (IOException e) {
-            plugin.getLogger().severe("Failed loading " + clazz.getName() + "command classes!");
-            e.printStackTrace();
-        }
-    }
-
-    private void initMainCommand() {
-        Class<?> clazz = MainCommand.class;
-
-        plugin.getLogger().info("Loading and registering " + clazz.getName() + " command...");
+    /**
+     * Initializes a command class
+     *
+     * @param clazz the command class
+     */
+    public void initCommand(Class<?> clazz) {
+        plugin.getLogger().info("Loading and registering " + clazz.getSimpleName() + " command...");
 
         try {
             this.parseAnnotationCommands(clazz.getDeclaredConstructor().newInstance());
         } catch (Exception e) {
-            plugin.getLogger().severe("Failed loading command class: " + clazz.getName());
+            plugin.getLogger().severe("Failed loading command class: " + clazz.getSimpleName());
             e.printStackTrace();
         }
 
-        plugin.getLogger().info("Registered " + clazz.getName() + " commands!");
+        plugin.getLogger().info("Registered " + clazz.getSimpleName() + " commands!");
     }
 
     private void parseAnnotationCommands(Object... clazz) {

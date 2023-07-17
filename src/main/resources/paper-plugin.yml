@@ -6,9 +6,15 @@ authors: [ necr ]
 description: Survival Tweaks
 bootstrapper: dev.necr.tweaker.TweakerBootstrap
 loader: dev.necr.tweaker.TweakerLoader
+
 dependencies:
   - name: DecentHolograms
     required: true
+  - name: LuckPerms
+    required: true
+
 load-after:
+  - name: LuckPerms
+    bootstrap: false
   - name: DecentHolograms
     bootstrap: false

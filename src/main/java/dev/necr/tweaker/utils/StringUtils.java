@@ -1,6 +1,7 @@
 package dev.necr.tweaker.utils;
 
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;

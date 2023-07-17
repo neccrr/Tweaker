@@ -1,13 +1,13 @@
-package dev.necr.tweaker.modules.hologram.data;
+package dev.necr.tweaker.modules.playerhologram.data;
 
 import java.util.List;
 
-public class PlayerData {
+public class PlayerHologramData {
     private String playerName;
     private String playerUUID;
     private List<String> holograms;
 
-    public PlayerData(String playerName, String playerUUID, List<String> holograms) {
+    public PlayerHologramData(String playerName, String playerUUID, List<String> holograms) {
         this.playerName = playerName;
         this.playerUUID = playerUUID;
         this.holograms = holograms;

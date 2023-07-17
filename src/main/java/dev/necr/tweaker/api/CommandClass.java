@@ -2,14 +2,11 @@ package dev.necr.tweaker.api;
 
 import cloud.commandframework.annotations.suggestions.Suggestions;
 import cloud.commandframework.context.CommandContext;
-
 import dev.necr.tweaker.Tweaker;
 import dev.necr.tweaker.callbacks.IsDoubleCallback;
 import dev.necr.tweaker.callbacks.IsIntegerCallback;
 import dev.necr.tweaker.utils.MathUtils;
-
 import lombok.Data;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

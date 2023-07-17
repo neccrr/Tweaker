@@ -1,9 +1,10 @@
 package dev.necr.tweaker.modules;
 
 import dev.necr.tweaker.Tweaker;
-import dev.necr.tweaker.modules.hologram.Hologram;
 import dev.necr.tweaker.modules.misc.Misc;
-import dev.necr.tweaker.modules.respawngui.RespawnGUI;
+import dev.necr.tweaker.modules.playerhologram.PlayerHologram;
+import dev.necr.tweaker.modules.playerprefix.PlayerPrefix;
+import dev.necr.tweaker.modules.privatemessage.PrivateMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,14 @@ public class ModuleManager {
     }
 
     public void initModules() {
-        RespawnGUI respawnGUI = new RespawnGUI();
-        respawnGUI.init();
+        PrivateMessage privateMessage = new PrivateMessage();
+        privateMessage.init();
 
-        Hologram hologram = new Hologram();
-        hologram.init();
+        PlayerPrefix playerPrefix = new PlayerPrefix();
+        playerPrefix.init();
+
+        PlayerHologram playerHologram = new PlayerHologram();
+        playerHologram.init();
 
         Misc misc = new Misc();
         misc.init();
